@@ -39,9 +39,9 @@ contract MyEIP712 is EIP712 {
     {
         bytes32 digest = digest(owner, myParam, deadline);
         address signer = ECDSA.recover(digest, signature);
-        if (block.timestamp > deadline) revert ExpiredSignature();
         if (signer == address(0)) revert AddressZero();
         if (signer != owner) revert InvalidSignature();
+        if (block.timestamp > deadline) revert ExpiredSignature();
         console2.log("MyData: signature verified");
 
         userToData[owner] = MyData(signer, myParam, nonces[owner], deadline);
