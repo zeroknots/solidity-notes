@@ -20,7 +20,7 @@ contract MyEIP712 is EIP712 {
 
     constructor() EIP712("MyEIP712", "4") {}
 
-    function digest(address owner, uint256 myParam, uint256 deadline) public view returns (bytes32) {
+    function getDigest(address owner, uint256 myParam, uint256 deadline) public view returns (bytes32) {
         return _hashTypedDataV4(
             keccak256(
                 abi.encode(
@@ -37,7 +37,7 @@ contract MyEIP712 is EIP712 {
     function executeMyFunctionFromSignature(bytes memory signature, address owner, uint256 myParam, uint256 deadline)
         external
     {
-        bytes32 digest = digest(owner, myParam, deadline);
+        bytes32 digest = getDigest(owner, myParam, deadline);
         address signer = ECDSA.recover(digest, signature);
         if (signer == address(0)) revert AddressZero();
         if (signer != owner) revert InvalidSignature();
@@ -66,7 +66,7 @@ contract DemoEIP712 is Script {
         address addr = vm.addr(privKey);
 
         uint256 deadline = block.timestamp + 1000;
-        bytes32 msgHash = myEIP712.digest(addr, 1, deadline);
+        bytes32 msgHash = myEIP712.getDigest(addr, 1, deadline);
 
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(privKey, msgHash);
 
