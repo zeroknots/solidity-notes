@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity 0.8.19;
 
 import "forge-std/Script.sol";
 import "forge-std/console2.sol";
@@ -15,8 +15,8 @@ contract MyEIP712 is EIP712 {
         uint256 deadline;
     }
 
-    mapping(address => MyData) public userToData;
-    mapping(address => uint256) public nonces;
+    mapping(address user => MyData) public userToData;
+    mapping(address user => uint256) public nonces;
 
     constructor() EIP712("MyEIP712", "4") {}
 
